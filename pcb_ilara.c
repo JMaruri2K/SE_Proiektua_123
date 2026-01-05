@@ -9,7 +9,11 @@ PCB* sortu_prozesua(){
     PCB* prozesu_berria = (PCB*)malloc(sizeof(PCB));
 
     int random_pid = (rand() % 9000) + 1000; 
+    int exekuzioa = (rand() % 7) + 1; //1-7 segundura.
+    int billeteak = (rand() % 10) + 1; //1-10
     prozesu_berria->pid = random_pid;
+    prozesu_berria->exekuzio_denbora = exekuzioa;
+    prozesu_berria->billete_kopurua = billeteak;
 
     return prozesu_berria;
 }
@@ -37,7 +41,7 @@ void sartu_ilaran(Queue *q, PCB *prozesu_berria){
 
     q->count++;
 
-    printf("Prozesu berria ilaran sartu da: %d\n", prozesu_berria->pid); 
+    //printf("Prozesu berria ilaran sartu da: %d\n", prozesu_berria->pid); 
 }
 
 
@@ -154,6 +158,121 @@ PCB* dado_txapelketa(Queue *q){
     free(oraingoa);
 
     return pcb_irabazlea;
+
+}
+
+PCB* SJF(Queue *q){
+
+    if(q->hasiera ==  NULL){
+
+        return NULL;
+
+    }
+
+    Nodoa *oraingoa = q->hasiera;
+    Nodoa *aurrekoa = NULL;
+
+
+    Nodoa *motzena = q->hasiera;
+    Nodoa *motzena_aurrekoa = NULL;
+
+
+    //Denbora gutxiena behar duen nodoa aurkitzeko 
+    while(oraingoa->hurrengoa != NULL){
+
+        aurrekoa = oraingoa;
+        oraingoa = oraingoa->hurrengoa;
+
+        if(oraingoa->prozesua->exekuzio_denbora < motzena->prozesua->exekuzio_denbora){
+
+
+            motzena = oraingoa;
+            motzena_aurrekoa = aurrekoa;
+
+        }
+
+    }
+
+    if(motzena_aurrekoa == NULL){
+
+        q->hasiera = motzena->hurrengoa;
+
+    }else{
+
+        motzena_aurrekoa->hurrengoa = motzena->hurrengoa;
+
+    }
+
+    if(motzena == q->bukaera){
+
+        q->bukaera = motzena_aurrekoa;
+
+    }
+
+    PCB* p = motzena->prozesua;
+    free(motzena);
+    q->count--;
+    return p;
+
+
+}
+
+PCB* zozketa(Queue *q){
+
+    if(q->hasiera ==  NULL || q->count == 0){
+
+        return NULL;
+
+    }
+
+    //Billete guztiak kontuan hartu behar dira zozketa egin ahal izateko
+    int billete_guztiak = 0;
+    Nodoa *aux = q->hasiera;
+    while(aux != NULL){
+
+        billete_guztiak += aux->prozesua->billete_kopurua;
+        aux = aux->hurrengoa;
+
+    }
+
+    int irabazlea = rand() % billete_guztiak;
+    int uneko_batura = 0;
+
+    Nodoa *oraingoa = q->hasiera;
+    Nodoa *aurrekoa = NULL;
+
+    while(oraingoa != NULL){
+
+        uneko_batura += oraingoa->prozesua->billete_kopurua;
+        if(uneko_batura > irabazlea){
+            //Irabazlea aurkituta ilaratik atera.
+            if(aurrekoa == NULL){
+
+                q->hasiera = oraingoa->hurrengoa;
+
+            }else{
+
+                aurrekoa->hurrengoa = oraingoa->hurrengoa;
+
+            }
+
+            if(oraingoa == q->bukaera){
+
+                q->bukaera = aurrekoa;
+
+            }
+
+            PCB* p = oraingoa->prozesua;
+            free(oraingoa);
+            q->count--;
+            return p;
+
+        }
+
+        aurrekoa = oraingoa;
+        oraingoa = oraingoa->hurrengoa;
+
+    }
 
 }
 

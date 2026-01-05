@@ -10,10 +10,7 @@ void *process_creator_fun(void *arg){
 
         pthread_mutex_lock(&mutex);
         
-        // Itxaron tick-a sortze-atalasearen multiploa izan arte
-        while((time_tick % prozesua_sortzeko_baldintza != 0 || azken_ticka == time_tick)  && stop == 0){ 
-            pthread_cond_wait(&cond_creator, &mutex);
-        }
+        pthread_cond_wait(&cond_sortzailea, &mutex);
 
         if(stop == 1){
             pthread_mutex_unlock(&mutex);

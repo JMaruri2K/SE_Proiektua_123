@@ -4,9 +4,10 @@
 #include <pthread.h>
 #include "pcb_ilara.h" 
 
-
+// Extern deklaratu beste programa guztiek ez hasieratzeko haien aldagaiak iadanik main-ean daude eginda.
 extern pthread_mutex_t mutex;
-extern pthread_cond_t cond_creator;      
+extern pthread_cond_t cond_timer;  
+extern pthread_cond_t cond_sortzailea;      
 extern pthread_cond_t cond_scheduler;    
 extern pthread_cond_t cond_tick_reset;    
 
@@ -20,7 +21,7 @@ extern int stop; // gelditzeko baldintza
 
 extern Queue prozesu_ilara; 
 
-// Prototipo de la función del hilo Clock (implementada en clock.c)
+// deklaratu beste programe erabili dezaten
 void *clock_fun(void *arg);
 
 #endif // CLOCK_H
