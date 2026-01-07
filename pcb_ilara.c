@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 
-PCB* sortu_prozesua(){
+//PCB* sortu_prozesua(){
     
     PCB* prozesu_berria = (PCB*)malloc(sizeof(PCB));
 
@@ -16,7 +16,7 @@ PCB* sortu_prozesua(){
     prozesu_berria->billete_kopurua = billeteak;
 
     return prozesu_berria;
-}
+//}
 
 
 void hasieratu_Queue(Queue *q){
