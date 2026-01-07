@@ -9,7 +9,9 @@
 #include "timer.h"  
 #include "clock.h"            
 #include "prozesu_sortzailea.h" 
-#include "scheduler.h"        
+#include "scheduler.h"  
+#include "memoria_fisikoa.h" 
+
 
 // Aldagaien definizio globala
 pthread_mutex_t mutex;
@@ -37,6 +39,20 @@ int main(){
 
     // Ilara hasieratu
     hasieratu_Queue(&prozesu_ilara);
+
+    
+    // Hasieratu memoria fisikoa
+    init_memoria_fisikoa();
+    
+    // Probak egin (aukerakoa)
+    printf("\n=== MEMORIA PROBAK ===\n");
+    idatzi_hitza(0x0000, 0x12345678);
+    idatzi_hitza(0x0004, 0xABCDEF00);
+    printf("0x0000-ko balioa: 0x%08X\n", irakurri_hitza(0x0000));
+    printf("0x0004-ko balioa: 0x%08X\n", irakurri_hitza(0x0004));
+    erakutsi_memoria(0x0000, 0x0010);
+    printf("=== PROBAK BUKATUAK ===\n\n");
+
     
     // clock-ean erabiliko diren gauzak hasieratu
     pthread_mutex_init(&mutex, NULL);
@@ -82,6 +98,8 @@ int main(){
     pthread_cond_destroy(&cond_scheduler);
     pthread_cond_destroy(&cond_timer); 
     printf("[MAIN] Mutex eta kondizioak suntzituta. Programa bukatuta.\n");
+
+    free_memoria_fisikoa();
 
     return 0;
 } 

@@ -4,8 +4,6 @@
 
 void *process_creator_fun(void *arg){
 
-    int azken_ticka = 0;
-
     while(stop == 0){
 
         pthread_mutex_lock(&mutex);
@@ -22,8 +20,6 @@ void *process_creator_fun(void *arg){
         printf("Prozesu berria sortua\n");
         sartu_ilaran(&prozesu_ilara, prozesu_berria);
         fflush(stdout);
-
-        azken_ticka = time_tick;
 
         pthread_mutex_unlock(&mutex);
     }

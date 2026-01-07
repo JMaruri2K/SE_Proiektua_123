@@ -20,7 +20,7 @@ void *timer_fun(void *arg) {
         }
 
         // Schedulerra: 5 segunduro CPU librea badago
-        if (time_tick % schedulerra_aktibatzeko_baldintza == 0 && cpu_exekutatzen == 0) {
+        if (time_tick % schedulerra_aktibatzeko_baldintza == 0) {
             pthread_cond_signal(&cond_scheduler);
         }
 

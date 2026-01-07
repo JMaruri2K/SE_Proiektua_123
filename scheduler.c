@@ -20,7 +20,7 @@ void *scheduler_aktibatzea(void *arg){
         // Scheduler politika aktibatzea
         printf("\nSchedulerra abiatzen\n");
         
-        if(prozesu_ilara.count > 0){
+        if(cpu_exekutatzen == 0 && prozesu_ilara.count > 0){
 
             // Ze prozesu aterako den ilaratik
             prozesua_exekutatu = zozketa(&prozesu_ilara);  
