@@ -4,9 +4,22 @@
 #include <stdlib.h> 
 
 typedef struct {
+
+    uint32_t pgb;      // Page Table Base
+    uint32_t code;     // .text hasierako helbide birtuala
+    uint32_t data;     // .data hasierako helbide birtuala
+
+} MemoryManagement;
+
+
+typedef struct {
     int pid;
     int exekuzio_denbora;
     int billete_kopurua;
+
+    MemoryManagement mm;
+
+    
 } PCB;
 
 typedef struct NodoIlara {
@@ -20,7 +33,7 @@ typedef struct QueueManager {
     int count;      
 } Queue;
 
-PCB* sortu_prozesua();
+//PCB* sortu_prozesua();
 void hasieratu_Queue(Queue *q);
 void sartu_ilaran(Queue *q, PCB *prozesu_berria);
 PCB* atera_ilaratik(Queue *q);
